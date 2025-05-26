@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Device: Identifiable {
+struct Device: Identifiable, Decodable {
     let id: UUID
     let name: String
     let isBlocked: Bool

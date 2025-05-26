@@ -16,12 +16,16 @@ final class MainViewModel: ObservableObject {
     }
     
     func loadMockData() {
-        self.networkStatus = NetworkStatus(isOnline: true, latency: 14, downloadSpeedMbps: 230.5, uploadSpeedMbps: 100.2)
-        
-        self.connectedDevices = [
-            Device(id: UUID(), name: "Rodrigo's iPhone", isBlocked: false, ipAddress: "192.168.0.12"),
-            Device(id: UUID(), name: "Smart TV", isBlocked: true, ipAddress: "192.168.0.23"),
-            Device(id: UUID(), name: "Notebook", isBlocked: false, ipAddress: "192.168.0.31")
-        ]
+        NetworkService.shared.fetchNetworkData { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    self?.networkStatus = response.networkStatus
+                    self?.connectedDevices = response.connectedDevices
+                case .failure(let error):
+                    print("Error loading mocked data: \(error)")
+                }
+            }
+        }
     }
 }

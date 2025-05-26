@@ -1,0 +1,28 @@
+{
+    "networkStatus": {
+        "isOnline": true,
+        "latency": 20,
+        "downloadSpeedMbps": 250.0,
+        "uploadSpeedMbps": 90.0
+    },
+    "connectedDevices": [
+        {
+            "id": "6E5A9A54-5F6C-4A3C-8C8D-1E6F85E091B0",
+            "name": "iPhone 15 Pro",
+            "isBlocked": false,
+            "ipAddress": "192.168.0.101"
+        },
+        {
+            "id": "2F4B8439-3B56-4825-88B2-97554DB2FDD8",
+            "name": "MacBook Pro",
+            "isBlocked": false,
+            "ipAddress": "192.168.0.102"
+        },
+        {
+            "id": "AC183E3E-9D73-4B2B-A3DF-245CE5EAB2B2",
+            "name": "Echo Dot",
+            "isBlocked": true,
+            "ipAddress": "192.168.0.103"
+        }
+    ]
+}

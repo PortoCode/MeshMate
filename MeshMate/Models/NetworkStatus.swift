@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NetworkStatus {
+struct NetworkStatus: Decodable {
     let isOnline: Bool
     let latency: Int
     let downloadSpeedMbps: Double
