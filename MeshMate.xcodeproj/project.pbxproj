@@ -16,9 +16,22 @@
 		6D9BC4592DDF61DC00C8C392 /* MeshMate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeshMate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6DAFC76E2DE5621400793A00 /* Exceptions for "MeshMate" folder in "MeshMate" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Protos/network.proto,
+			);
+			target = 6D9BC4582DDF61DC00C8C392 /* MeshMate */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		6D9BC45B2DDF61DC00C8C392 /* MeshMate */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6DAFC76E2DE5621400793A00 /* Exceptions for "MeshMate" folder in "MeshMate" target */,
+			);
 			path = MeshMate;
 			sourceTree = "<group>";
 		};

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package meshmate;
+
+service NetworkService {
+    rpc GetNetworkStatus (NetworkStatusRequest) returns (NetworkStatusResponse);
+}
+
+message NetworkStatusRequest {}
+
+message NetworkStatusResponse {
+    bool isOnline = 1;
+    int32 latency = 2;
+    double downloadSpeedMbps = 3;
+    double uploadSpeedMbps = 4;
+}

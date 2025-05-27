@@ -13,6 +13,7 @@ final class MainViewModel: ObservableObject {
     
     init() {
         loadMockData()
+        loadDataFromGRPC()
     }
     
     func loadMockData() {
@@ -25,6 +26,20 @@ final class MainViewModel: ObservableObject {
                 case .failure(let error):
                     print("Error loading mocked data: \(error)")
                 }
+            }
+        }
+    }
+    
+    func loadDataFromGRPC() {
+        let grpcClient = MockNetworkServiceClient()
+        grpcClient.getNetworkStatus { [weak self] response in
+            DispatchQueue.main.async {
+                self?.networkStatus = NetworkStatus(
+                    isOnline: response.isOnline,
+                    latency: Int(response.latency),
+                    downloadSpeedMbps: response.downloadSpeedMbps,
+                    uploadSpeedMbps: response.uploadSpeedMbps
+                )
             }
         }
     }
