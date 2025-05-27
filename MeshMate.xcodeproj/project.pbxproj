@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6DAFC7192DE5553100793A00 /* CGRPCZlib in Frameworks */ = {isa = PBXBuildFile; productRef = 6DAFC7182DE5553100793A00 /* CGRPCZlib */; };
+		6DAFC71B2DE5553100793A00 /* GRPC in Frameworks */ = {isa = PBXBuildFile; productRef = 6DAFC71A2DE5553100793A00 /* GRPC */; };
+		6DAFC71D2DE5553100793A00 /* GRPCReflectionService in Frameworks */ = {isa = PBXBuildFile; productRef = 6DAFC71C2DE5553100793A00 /* GRPCReflectionService */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		6D9BC4592DDF61DC00C8C392 /* MeshMate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeshMate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +29,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DAFC71D2DE5553100793A00 /* GRPCReflectionService in Frameworks */,
+				6DAFC71B2DE5553100793A00 /* GRPC in Frameworks */,
+				6DAFC7192DE5553100793A00 /* CGRPCZlib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +74,9 @@
 			);
 			name = MeshMate;
 			packageProductDependencies = (
+				6DAFC7182DE5553100793A00 /* CGRPCZlib */,
+				6DAFC71A2DE5553100793A00 /* GRPC */,
+				6DAFC71C2DE5553100793A00 /* GRPCReflectionService */,
 			);
 			productName = MeshMate;
 			productReference = 6D9BC4592DDF61DC00C8C392 /* MeshMate.app */;
@@ -94,6 +106,9 @@
 			);
 			mainGroup = 6D9BC4502DDF61DC00C8C392;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6DAFC7172DE5553100793A00 /* XCRemoteSwiftPackageReference "grpc-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6D9BC45A2DDF61DC00C8C392 /* Products */;
 			projectDirPath = "";
@@ -324,6 +339,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6DAFC7172DE5553100793A00 /* XCRemoteSwiftPackageReference "grpc-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/grpc/grpc-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.20.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6DAFC7182DE5553100793A00 /* CGRPCZlib */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6DAFC7172DE5553100793A00 /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = CGRPCZlib;
+		};
+		6DAFC71A2DE5553100793A00 /* GRPC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6DAFC7172DE5553100793A00 /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = GRPC;
+		};
+		6DAFC71C2DE5553100793A00 /* GRPCReflectionService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6DAFC7172DE5553100793A00 /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = GRPCReflectionService;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6D9BC4512DDF61DC00C8C392 /* Project object */;
 }
