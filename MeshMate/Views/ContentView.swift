@@ -13,9 +13,17 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 16) {
+                Picker("Network Mode", selection: $viewModel.mode) {
+                    ForEach(NetworkMode.allCases) { mode in
+                        Text(mode.rawValue).tag(mode)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding()
+                
                 if let status = viewModel.networkStatus {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("MeshMate")
+                        Text("My Network")
                             .font(.largeTitle).bold()
                         Text("Network Status: \(status.isOnline ? "Online" : "Offline")")
                             .font(.subheadline)
@@ -27,18 +35,28 @@ struct ContentView: View {
                     .padding()
                 }
                 
-                List {
-                    Section {
-                        ForEach(viewModel.connectedDevices) { device in
-                            DeviceRowView(name: device.name, ipAddress: device.ipAddress, isBlocked: device.isBlocked)
+                if !viewModel.connectedDevices.isEmpty {
+                    List {
+                        Section {
+                            ForEach(viewModel.connectedDevices) { device in
+                                DeviceRowView(name: device.name, ipAddress: device.ipAddress, isBlocked: device.isBlocked)
+                            }
+                        } header: {
+                            Text("Connected Devices")
                         }
-                    } header: {
-                        Text("Connected Devices")
                     }
+                    .listStyle(.insetGrouped)
                 }
-                .listStyle(.insetGrouped)
+                
+                Spacer()
+                
+                Button("Load Data") {
+                    viewModel.loadData()
+                }
+                .padding()
+                .buttonStyle(.borderedProminent)
             }
-            .navigationTitle("My Network")
+            .navigationTitle("MeshMate")
         }
     }
 }

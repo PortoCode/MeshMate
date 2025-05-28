@@ -7,17 +7,23 @@
 
 import Foundation
 
+@MainActor
 final class MainViewModel: ObservableObject {
     @Published var networkStatus: NetworkStatus?
     @Published var connectedDevices: [Device] = []
+    @Published var mode: NetworkMode = .rest
     
-    init() {
-        loadDataFromREST()
-        loadNetworkStatusFromGRPC()
-        loadDevicesFromGRPC()
+    func loadData() {
+        switch mode {
+        case .rest:
+            loadDataFromREST()
+        case .grpc:
+            loadDataFromGRPC()
+        }
     }
     
     func loadDataFromREST() {
+        print("loading data from REST...")
         NetworkService.shared.fetchNetworkData { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
@@ -31,8 +37,14 @@ final class MainViewModel: ObservableObject {
         }
     }
     
-    func loadNetworkStatusFromGRPC() {
+    func loadDataFromGRPC(){
+        print("loading data from gRPC...")
         let grpcClient = MockNetworkServiceClient()
+        loadNetworkStatusFromGRPC(grpcClient: grpcClient)
+        loadDevicesFromGRPC(grpcClient: grpcClient)
+    }
+    
+    private func loadNetworkStatusFromGRPC(grpcClient: MockNetworkServiceClient) {
         grpcClient.getNetworkStatus { [weak self] response in
             DispatchQueue.main.async {
                 self?.networkStatus = NetworkStatus(
@@ -45,8 +57,7 @@ final class MainViewModel: ObservableObject {
         }
     }
     
-    func loadDevicesFromGRPC() {
-        let grpcClient = MockNetworkServiceClient()
+    private func loadDevicesFromGRPC(grpcClient: MockNetworkServiceClient) {
         grpcClient.getConnectedDevices { [weak self] response in
             DispatchQueue.main.async {
                 self?.connectedDevices = response.devices.map {
