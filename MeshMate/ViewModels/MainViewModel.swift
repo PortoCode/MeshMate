@@ -50,6 +50,12 @@ final class MainViewModel: ObservableObject {
         loadDevicesFromGRPC()
     }
     
+    func updateDevice(_ device: Device) {
+        if let index = connectedDevices.firstIndex(where: { $0.ipAddress == device.ipAddress }) {
+            connectedDevices[index] = device
+        }
+    }
+    
     private func loadNetworkStatusFromGRPC() {
         grpcClient.getNetworkStatus { [weak self] response in
             DispatchQueue.main.async {
@@ -68,7 +74,7 @@ final class MainViewModel: ObservableObject {
             DispatchQueue.main.async {
                 withAnimation {
                     self?.connectedDevices = response.devices.map {
-                        Device(id: UUID(), name: $0.name, isBlocked: $0.isBlocked, ipAddress: $0.ipAddress)
+                        Device(id: UUID(), name: $0.name, ipAddress: $0.ipAddress, isBlocked: $0.isBlocked)
                     }
                 }
             }

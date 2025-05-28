@@ -9,7 +9,7 @@ import Foundation
 
 struct Device: Identifiable, Decodable {
     let id: UUID
-    let name: String
-    let isBlocked: Bool
-    let ipAddress: String
+    var name: String
+    var ipAddress: String
+    var isBlocked: Bool
 }
