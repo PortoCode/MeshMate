@@ -20,6 +20,11 @@ internal protocol Meshmate_NetworkServiceClientProtocol: GRPCClient {
     _ request: Meshmate_NetworkStatusRequest,
     callOptions: CallOptions?
   ) -> UnaryCall<Meshmate_NetworkStatusRequest, Meshmate_NetworkStatusResponse>
+
+  func getConnectedDevices(
+    _ request: Meshmate_ConnectedDevicesRequest,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Meshmate_ConnectedDevicesRequest, Meshmate_ConnectedDevicesResponse>
 }
 
 extension Meshmate_NetworkServiceClientProtocol {
@@ -42,6 +47,24 @@ extension Meshmate_NetworkServiceClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeGetNetworkStatusInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to GetConnectedDevices
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to GetConnectedDevices.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  internal func getConnectedDevices(
+    _ request: Meshmate_ConnectedDevicesRequest,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Meshmate_ConnectedDevicesRequest, Meshmate_ConnectedDevicesResponse> {
+    return self.makeUnaryCall(
+      path: Meshmate_NetworkServiceClientMetadata.Methods.getConnectedDevices.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetConnectedDevicesInterceptors() ?? []
     )
   }
 }
@@ -112,6 +135,11 @@ internal protocol Meshmate_NetworkServiceAsyncClientProtocol: GRPCClient {
     _ request: Meshmate_NetworkStatusRequest,
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<Meshmate_NetworkStatusRequest, Meshmate_NetworkStatusResponse>
+
+  func makeGetConnectedDevicesCall(
+    _ request: Meshmate_ConnectedDevicesRequest,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Meshmate_ConnectedDevicesRequest, Meshmate_ConnectedDevicesResponse>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -135,6 +163,18 @@ extension Meshmate_NetworkServiceAsyncClientProtocol {
       interceptors: self.interceptors?.makeGetNetworkStatusInterceptors() ?? []
     )
   }
+
+  internal func makeGetConnectedDevicesCall(
+    _ request: Meshmate_ConnectedDevicesRequest,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Meshmate_ConnectedDevicesRequest, Meshmate_ConnectedDevicesResponse> {
+    return self.makeAsyncUnaryCall(
+      path: Meshmate_NetworkServiceClientMetadata.Methods.getConnectedDevices.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetConnectedDevicesInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -148,6 +188,18 @@ extension Meshmate_NetworkServiceAsyncClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeGetNetworkStatusInterceptors() ?? []
+    )
+  }
+
+  internal func getConnectedDevices(
+    _ request: Meshmate_ConnectedDevicesRequest,
+    callOptions: CallOptions? = nil
+  ) async throws -> Meshmate_ConnectedDevicesResponse {
+    return try await self.performAsyncUnaryCall(
+      path: Meshmate_NetworkServiceClientMetadata.Methods.getConnectedDevices.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetConnectedDevicesInterceptors() ?? []
     )
   }
 }
@@ -173,6 +225,9 @@ internal protocol Meshmate_NetworkServiceClientInterceptorFactoryProtocol: Senda
 
   /// - Returns: Interceptors to use when invoking 'getNetworkStatus'.
   func makeGetNetworkStatusInterceptors() -> [ClientInterceptor<Meshmate_NetworkStatusRequest, Meshmate_NetworkStatusResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'getConnectedDevices'.
+  func makeGetConnectedDevicesInterceptors() -> [ClientInterceptor<Meshmate_ConnectedDevicesRequest, Meshmate_ConnectedDevicesResponse>]
 }
 
 internal enum Meshmate_NetworkServiceClientMetadata {
@@ -181,6 +236,7 @@ internal enum Meshmate_NetworkServiceClientMetadata {
     fullName: "meshmate.NetworkService",
     methods: [
       Meshmate_NetworkServiceClientMetadata.Methods.getNetworkStatus,
+      Meshmate_NetworkServiceClientMetadata.Methods.getConnectedDevices,
     ]
   )
 
@@ -188,6 +244,12 @@ internal enum Meshmate_NetworkServiceClientMetadata {
     internal static let getNetworkStatus = GRPCMethodDescriptor(
       name: "GetNetworkStatus",
       path: "/meshmate.NetworkService/GetNetworkStatus",
+      type: GRPCCallType.unary
+    )
+
+    internal static let getConnectedDevices = GRPCMethodDescriptor(
+      name: "GetConnectedDevices",
+      path: "/meshmate.NetworkService/GetConnectedDevices",
       type: GRPCCallType.unary
     )
   }
@@ -198,6 +260,8 @@ internal protocol Meshmate_NetworkServiceProvider: CallHandlerProvider {
   var interceptors: Meshmate_NetworkServiceServerInterceptorFactoryProtocol? { get }
 
   func getNetworkStatus(request: Meshmate_NetworkStatusRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Meshmate_NetworkStatusResponse>
+
+  func getConnectedDevices(request: Meshmate_ConnectedDevicesRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Meshmate_ConnectedDevicesResponse>
 }
 
 extension Meshmate_NetworkServiceProvider {
@@ -221,6 +285,15 @@ extension Meshmate_NetworkServiceProvider {
         userFunction: self.getNetworkStatus(request:context:)
       )
 
+    case "GetConnectedDevices":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Meshmate_ConnectedDevicesRequest>(),
+        responseSerializer: ProtobufSerializer<Meshmate_ConnectedDevicesResponse>(),
+        interceptors: self.interceptors?.makeGetConnectedDevicesInterceptors() ?? [],
+        userFunction: self.getConnectedDevices(request:context:)
+      )
+
     default:
       return nil
     }
@@ -237,6 +310,11 @@ internal protocol Meshmate_NetworkServiceAsyncProvider: CallHandlerProvider, Sen
     request: Meshmate_NetworkStatusRequest,
     context: GRPCAsyncServerCallContext
   ) async throws -> Meshmate_NetworkStatusResponse
+
+  func getConnectedDevices(
+    request: Meshmate_ConnectedDevicesRequest,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> Meshmate_ConnectedDevicesResponse
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -267,6 +345,15 @@ extension Meshmate_NetworkServiceAsyncProvider {
         wrapping: { try await self.getNetworkStatus(request: $0, context: $1) }
       )
 
+    case "GetConnectedDevices":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Meshmate_ConnectedDevicesRequest>(),
+        responseSerializer: ProtobufSerializer<Meshmate_ConnectedDevicesResponse>(),
+        interceptors: self.interceptors?.makeGetConnectedDevicesInterceptors() ?? [],
+        wrapping: { try await self.getConnectedDevices(request: $0, context: $1) }
+      )
+
     default:
       return nil
     }
@@ -278,6 +365,10 @@ internal protocol Meshmate_NetworkServiceServerInterceptorFactoryProtocol: Senda
   /// - Returns: Interceptors to use when handling 'getNetworkStatus'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeGetNetworkStatusInterceptors() -> [ServerInterceptor<Meshmate_NetworkStatusRequest, Meshmate_NetworkStatusResponse>]
+
+  /// - Returns: Interceptors to use when handling 'getConnectedDevices'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeGetConnectedDevicesInterceptors() -> [ServerInterceptor<Meshmate_ConnectedDevicesRequest, Meshmate_ConnectedDevicesResponse>]
 }
 
 internal enum Meshmate_NetworkServiceServerMetadata {
@@ -286,6 +377,7 @@ internal enum Meshmate_NetworkServiceServerMetadata {
     fullName: "meshmate.NetworkService",
     methods: [
       Meshmate_NetworkServiceServerMetadata.Methods.getNetworkStatus,
+      Meshmate_NetworkServiceServerMetadata.Methods.getConnectedDevices,
     ]
   )
 
@@ -293,6 +385,12 @@ internal enum Meshmate_NetworkServiceServerMetadata {
     internal static let getNetworkStatus = GRPCMethodDescriptor(
       name: "GetNetworkStatus",
       path: "/meshmate.NetworkService/GetNetworkStatus",
+      type: GRPCCallType.unary
+    )
+
+    internal static let getConnectedDevices = GRPCMethodDescriptor(
+      name: "GetConnectedDevices",
+      path: "/meshmate.NetworkService/GetConnectedDevices",
       type: GRPCCallType.unary
     )
   }

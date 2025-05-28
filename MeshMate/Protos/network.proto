@@ -4,6 +4,7 @@ package meshmate;
 
 service NetworkService {
     rpc GetNetworkStatus (NetworkStatusRequest) returns (NetworkStatusResponse);
+    rpc GetConnectedDevices (ConnectedDevicesRequest) returns (ConnectedDevicesResponse);
 }
 
 message NetworkStatusRequest {}
@@ -13,4 +14,16 @@ message NetworkStatusResponse {
     int32 latency = 2;
     double downloadSpeedMbps = 3;
     double uploadSpeedMbps = 4;
+}
+
+message ConnectedDevicesRequest {}
+
+message ConnectedDevicesResponse {
+    repeated Device devices = 1;
+}
+
+message Device {
+    string name = 1;
+    bool isBlocked = 2;
+    string ipAddress = 3;
 }

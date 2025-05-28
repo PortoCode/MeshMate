@@ -30,7 +30,7 @@ struct ContentView: View {
                 List {
                     Section {
                         ForEach(viewModel.connectedDevices) { device in
-                            DeviceRowView(name: device.name, isBlocked: device.isBlocked)
+                            DeviceRowView(name: device.name, ipAddress: device.ipAddress, isBlocked: device.isBlocked)
                         }
                     } header: {
                         Text("Connected Devices")
@@ -45,13 +45,20 @@ struct ContentView: View {
 
 struct DeviceRowView: View {
     let name: String
+    let ipAddress: String
     let isBlocked: Bool
     
     var body: some View {
         HStack {
             Image(systemName: isBlocked ? "xmark.shield" : "wifi")
                 .foregroundStyle(isBlocked ? .red : .blue)
-            Text(name)
+            VStack(alignment: .leading) {
+                Text(name)
+                    .fontWeight(.semibold)
+                Text(ipAddress)
+                    .font(.caption)
+                    .foregroundColor(.gray)
+            }
             Spacer()
             Text(isBlocked ? "Blocked" : "Active")
                 .font(.caption)
