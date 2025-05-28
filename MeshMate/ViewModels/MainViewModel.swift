@@ -10,10 +10,18 @@ import SwiftUI
 @MainActor
 final class MainViewModel: ObservableObject {
     @Published var networkStatus: NetworkStatus?
-    @Published var connectedDevices: [Device] = []
+    @Published var connectedDevices: [Device] = [] {
+        didSet {
+            DeviceStorage.save(connectedDevices)
+        }
+    }
     @Published var mode: NetworkMode = .rest
     
     private var grpcClient = MockNetworkServiceClient()
+    
+    init() {
+        connectedDevices = DeviceStorage.load()
+    }
     
     func loadData() {
         switch mode {
