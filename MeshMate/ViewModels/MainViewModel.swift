@@ -5,13 +5,15 @@
 //  Created by Rodrigo Porto on 25/05/25.
 //
 
-import Foundation
+import SwiftUI
 
 @MainActor
 final class MainViewModel: ObservableObject {
     @Published var networkStatus: NetworkStatus?
     @Published var connectedDevices: [Device] = []
     @Published var mode: NetworkMode = .rest
+    
+    private var grpcClient = MockNetworkServiceClient()
     
     func loadData() {
         switch mode {
@@ -23,13 +25,14 @@ final class MainViewModel: ObservableObject {
     }
     
     func loadDataFromREST() {
-        print("loading data from REST...")
         NetworkService.shared.fetchNetworkData { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
                     self?.networkStatus = response.networkStatus
-                    self?.connectedDevices = response.connectedDevices
+                    withAnimation {
+                        self?.connectedDevices = response.connectedDevices
+                    }
                 case .failure(let error):
                     print("Error loading mocked data: \(error)")
                 }
@@ -37,14 +40,17 @@ final class MainViewModel: ObservableObject {
         }
     }
     
-    func loadDataFromGRPC(){
-        print("loading data from gRPC...")
-        let grpcClient = MockNetworkServiceClient()
-        loadNetworkStatusFromGRPC(grpcClient: grpcClient)
-        loadDevicesFromGRPC(grpcClient: grpcClient)
+    func loadDataFromGRPC() {
+        loadNetworkStatusFromGRPC()
+        loadDevicesFromGRPC()
     }
     
-    private func loadNetworkStatusFromGRPC(grpcClient: MockNetworkServiceClient) {
+    func refreshDevices() {
+        guard mode == .grpc else { return }
+        loadDevicesFromGRPC()
+    }
+    
+    private func loadNetworkStatusFromGRPC() {
         grpcClient.getNetworkStatus { [weak self] response in
             DispatchQueue.main.async {
                 self?.networkStatus = NetworkStatus(
@@ -57,11 +63,13 @@ final class MainViewModel: ObservableObject {
         }
     }
     
-    private func loadDevicesFromGRPC(grpcClient: MockNetworkServiceClient) {
+    private func loadDevicesFromGRPC() {
         grpcClient.getConnectedDevices { [weak self] response in
             DispatchQueue.main.async {
-                self?.connectedDevices = response.devices.map {
-                    Device(id: UUID(), name: $0.name, isBlocked: $0.isBlocked, ipAddress: $0.ipAddress)
+                withAnimation {
+                    self?.connectedDevices = response.devices.map {
+                        Device(id: UUID(), name: $0.name, isBlocked: $0.isBlocked, ipAddress: $0.ipAddress)
+                    }
                 }
             }
         }

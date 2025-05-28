@@ -46,6 +46,13 @@ struct ContentView: View {
                         }
                     }
                     .listStyle(.insetGrouped)
+                    
+                    if viewModel.mode == .grpc {
+                        Button("🔄 Update Devices") {
+                            viewModel.refreshDevices()
+                        }
+                        .padding(.bottom)
+                    }
                 }
                 
                 Spacer()
