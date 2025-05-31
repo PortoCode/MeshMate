@@ -8,23 +8,27 @@
 import SwiftUI
 
 struct MainView: View {
-    @StateObject private var viewModel = MainViewModel()
+    @ObservedObject var viewModel: MainViewModel
     
     var body: some View {
         NavigationStack {
             VStack(spacing: 16) {
+                
                 Picker("Network Mode", selection: $viewModel.mode) {
                     ForEach(NetworkMode.allCases) { mode in
                         Text(mode.rawValue).tag(mode)
                     }
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .padding()
+                .padding(.horizontal)
                 
                 if let status = viewModel.networkStatus {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("My Network")
-                            .font(.largeTitle).bold()
+                        HStack {
+                            Image(systemName: "dot.radiowaves.left.and.right")
+                            Text("My Network")
+                                .font(.largeTitle).bold()
+                        }
                         Text("Network Status: \(status.isOnline ? "Online" : "Offline")")
                             .font(.subheadline)
                             .foregroundStyle(status.isOnline ? .green : .red)
@@ -32,12 +36,12 @@ struct MainView: View {
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }
-                    .padding()
+                    .padding(.horizontal)
                 }
                 
                 if !viewModel.connectedDevices.isEmpty {
                     List {
-                        Section {
+                        Section(header: Label("Connected Devices", systemImage: "person.3.sequence")) {
                             ForEach(viewModel.connectedDevices) { device in
                                 NavigationLink {
                                     DeviceDetailView(device: device) { updated in
@@ -46,58 +50,55 @@ struct MainView: View {
                                 } label: {
                                     DeviceRowView(name: device.name, ipAddress: device.ipAddress, isBlocked: device.isBlocked)
                                 }
+                                .contextMenu {
+                                    Button(device.isBlocked ? "Unblock" : "Block") {
+                                        viewModel.toggleBlock(for: device)
+                                    }
+                                    Button("Remove", role: .destructive) {
+                                        viewModel.removeDevice(device)
+                                    }
+                                }
                             }
-                        } header: {
-                            Text("Connected Devices")
                         }
                     }
                     .listStyle(.insetGrouped)
+                    .frame(maxHeight: 300)
+                    .padding(.top, 1)
                     
                     if viewModel.mode == .grpc {
-                        Button("🔄 Update Devices") {
+                        Button {
                             viewModel.refreshDevices()
+                        } label: {
+                            Label("Update Devices", systemImage: "arrow.triangle.2.circlepath")
                         }
-                        .padding(.bottom)
+                        .buttonStyle(.bordered)
+                        .padding(.bottom, 8)
                     }
+                }
+                
+                if viewModel.isLoading {
+                    ProgressView("Loading…")
+                        .padding(.bottom, 4)
                 }
                 
                 Spacer()
                 
-                Button("Load Data") {
+                Button(action: {
                     viewModel.loadData()
+                }) {
+                    Label("Load Data", systemImage: "tray.and.arrow.down")
                 }
                 .padding()
                 .buttonStyle(.borderedProminent)
             }
             .navigationTitle("MeshMate")
-        }
-    }
-}
-
-struct DeviceRowView: View {
-    let name: String
-    let ipAddress: String
-    let isBlocked: Bool
-    
-    var body: some View {
-        HStack {
-            Image(systemName: isBlocked ? "xmark.shield" : "wifi")
-                .foregroundStyle(isBlocked ? .red : .blue)
-            VStack(alignment: .leading) {
-                Text(name)
-                    .fontWeight(.semibold)
-                Text(ipAddress)
-                    .font(.caption)
-                    .foregroundColor(.gray)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: SettingsView()) {
+                        Image(systemName: "gearshape")
+                    }
+                }
             }
-            Spacer()
-            Text(isBlocked ? "Blocked" : "Active")
-                .font(.caption)
-                .foregroundStyle(isBlocked ? .red : .green)
         }
     }
-}
-
-#Preview {
-    MainView()
 }
