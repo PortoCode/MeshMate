@@ -9,83 +9,46 @@ import SwiftUI
 
 @MainActor
 final class MainViewModel: ObservableObject {
-    @Published var networkStatus: NetworkStatus?
-    @Published var connectedDevices: [Device] = [] {
-        didSet {
-            DeviceStorage.save(connectedDevices)
-        }
+    @ObservedObject var model: NetworkDataModel
+    
+    init(model: NetworkDataModel) {
+        self.model = model
     }
-    @Published var mode: NetworkMode = .rest
     
-    private var grpcClient = MockNetworkServiceClient()
+    var networkStatus: NetworkStatus? {
+        model.networkStatus
+    }
     
-    init() {
-        connectedDevices = DeviceStorage.load()
+    var connectedDevices: [Device] {
+        model.connectedDevices
+    }
+    
+    var isLoading: Bool {
+        model.isLoading
+    }
+    
+    var mode: NetworkMode {
+        get { model.mode }
+        set { model.mode = newValue }
     }
     
     func loadData() {
-        switch mode {
-        case .rest:
-            loadDataFromREST()
-        case .grpc:
-            loadDataFromGRPC()
-        }
-    }
-    
-    func loadDataFromREST() {
-        NetworkService.shared.fetchNetworkData { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let response):
-                    self?.networkStatus = response.networkStatus
-                    withAnimation {
-                        self?.connectedDevices = response.connectedDevices
-                    }
-                case .failure(let error):
-                    print("Error loading mocked data: \(error)")
-                }
-            }
-        }
-    }
-    
-    func loadDataFromGRPC() {
-        loadNetworkStatusFromGRPC()
-        loadDevicesFromGRPC()
+        model.loadData()
     }
     
     func refreshDevices() {
-        guard mode == .grpc else { return }
-        loadDevicesFromGRPC()
+        model.refreshDevices()
     }
     
     func updateDevice(_ device: Device) {
-        if let index = connectedDevices.firstIndex(where: { $0.ipAddress == device.ipAddress }) {
-            connectedDevices[index] = device
-        }
+        model.updateDevice(device)
     }
     
-    private func loadNetworkStatusFromGRPC() {
-        grpcClient.getNetworkStatus { [weak self] response in
-            DispatchQueue.main.async {
-                self?.networkStatus = NetworkStatus(
-                    isOnline: response.isOnline,
-                    latency: Int(response.latency),
-                    downloadSpeedMbps: response.downloadSpeedMbps,
-                    uploadSpeedMbps: response.uploadSpeedMbps
-                )
-            }
-        }
+    func toggleBlock(for device: Device) {
+        model.toggleBlock(for: device)
     }
     
-    private func loadDevicesFromGRPC() {
-        grpcClient.getConnectedDevices { [weak self] response in
-            DispatchQueue.main.async {
-                withAnimation {
-                    self?.connectedDevices = response.devices.map {
-                        Device(id: UUID(), name: $0.name, ipAddress: $0.ipAddress, isBlocked: $0.isBlocked)
-                    }
-                }
-            }
-        }
+    func removeDevice(_ device: Device) {
+        model.removeDevice(device)
     }
 }
