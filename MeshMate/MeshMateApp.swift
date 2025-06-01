@@ -11,7 +11,13 @@ import SwiftUI
 struct MeshMateApp: App {
     var body: some Scene {
         WindowGroup {
-            MainTabBar()
+            SplashScreenView()
         }
+    }
+    
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        Thread.sleep(forTimeInterval: 5) // 2 seconds delay
+        return true
     }
 }
