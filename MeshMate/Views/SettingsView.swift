@@ -24,6 +24,15 @@ struct SettingsView: View {
                 Section(header: Label("About", systemImage: "info.circle")) {
                     Text("MeshMate v1.0")
                 }
+                Section {
+                    Button {
+                        // log out logic
+                    } label: {
+                        Text("Log Out")
+                            .foregroundStyle(.red)
+                    }
+                    
+                }
             }
             .navigationTitle("Settings")
         }
