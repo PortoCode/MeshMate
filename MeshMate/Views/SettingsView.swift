@@ -31,10 +31,27 @@ struct SettingsView: View {
                         Text("Log Out")
                             .foregroundStyle(.red)
                     }
-                    
                 }
+                Section {
+                    HStack {
+                        Spacer()
+                        Text("© 2025 MeshMate Inc.")
+                            .font(.footnote)
+                            .foregroundStyle(.gray)
+                            .multilineTextAlignment(.center)
+                        Spacer()
+                    }
+                    .padding(.top, 10)
+                    .padding(.bottom, 20)
+                }
+                .listRowBackground(Color(UIColor.systemGroupedBackground))
+                .listRowInsets(EdgeInsets())
             }
             .navigationTitle("Settings")
         }
     }
+}
+
+#Preview {
+    SettingsView()
 }
