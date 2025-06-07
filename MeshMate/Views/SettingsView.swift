@@ -11,10 +11,10 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Account")) {
+                Section(header: Label("Account", systemImage: "person.circle")) {
                     Text("Profile settings go here…")
                 }
-                Section(header: Text("About")) {
+                Section(header: Label("About", systemImage: "info.circle")) {
                     Text("MeshMate v1.0")
                 }
             }
