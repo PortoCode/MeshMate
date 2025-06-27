@@ -16,7 +16,10 @@ struct SettingsView: View {
                 Section(header: Label("Account", systemImage: "person.circle")) {
                     Text("Profile settings go here…")
                 }
-                Section(header: Label("Notifications", systemImage: "bell.badge")) {
+                Section(
+                    header: Label("Notifications", systemImage: "bell.badge"),
+                    footer: Text("Receive updates and alerts directly.")
+                ) {
                     Toggle(isOn: $isNotificationsEnabled) {
                         Text("Enable Notifications")
                     }
