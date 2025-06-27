@@ -28,11 +28,10 @@ struct SettingsView: View {
                     Text("MeshMate v1.0")
                 }
                 Section {
-                    Button {
+                    Button(role: .destructive) {
                         // log out logic
                     } label: {
                         Text("Log Out")
-                            .foregroundStyle(.red)
                     }
                 }
                 Section {
