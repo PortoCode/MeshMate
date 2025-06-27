@@ -29,6 +29,7 @@ struct SettingsView: View {
                 }
                 Section {
                     Button(role: .destructive) {
+                        HapticsManager.impact(style: .light)
                         // log out logic
                     } label: {
                         Text("Log Out")
