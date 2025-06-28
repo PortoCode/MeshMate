@@ -32,3 +32,7 @@ struct LoginView: View {
         .padding()
     }
 }
+
+#Preview {
+    LoginView(auth: AuthManager())
+}
