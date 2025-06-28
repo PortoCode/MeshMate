@@ -15,21 +15,26 @@ struct LoginView: View {
             Text("MeshMate")
                 .font(.largeTitle)
                 .bold()
+                .foregroundStyle(.white)
             
-            TextField("Usuário", text: $auth.username)
+            TextField("Username", text: $auth.username)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .autocapitalization(.none)
             
-            SecureField("Senha", text: $auth.password)
+            SecureField("Password", text: $auth.password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             
-            Button("Entrar") {
+            Button("Login") {
                 auth.login()
             }
             .buttonStyle(.borderedProminent)
+            .foregroundStyle(.white)
             .disabled(auth.username.isEmpty || auth.password.isEmpty)
         }
         .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color("LaunchBackground"))
+        .ignoresSafeArea()
     }
 }
 
