@@ -30,5 +30,5 @@ struct MainTabBar: View {
 }
 
 #Preview {
-    MainTabBar()
+    MainTabBar().environmentObject(AuthManager())
 }
