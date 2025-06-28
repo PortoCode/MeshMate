@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @EnvironmentObject var auth: AuthManager
     @State private var isNotificationsEnabled: Bool = false
     
     var body: some View {
@@ -30,7 +31,7 @@ struct SettingsView: View {
                 Section {
                     Button(role: .destructive) {
                         HapticsManager.impact(style: .light)
-                        // log out logic
+                        auth.logout()
                     } label: {
                         Text("Log Out")
                     }

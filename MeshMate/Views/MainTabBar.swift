@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MainTabBar: View {
+    @EnvironmentObject var auth: AuthManager
     @StateObject private var networkModel = NetworkDataModel()
     
     var body: some View {
@@ -22,6 +23,7 @@ struct MainTabBar: View {
             
             Tab("Settings", systemImage: "gear") {
                 SettingsView()
+                    .environmentObject(auth)
             }
         }
     }
