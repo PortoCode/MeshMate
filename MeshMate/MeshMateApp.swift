@@ -9,9 +9,23 @@ import SwiftUI
 
 @main
 struct MeshMateApp: App {
+    @StateObject private var auth = AuthManager()
+    @State private var didShowSplash = false
+    
     var body: some Scene {
         WindowGroup {
-            SplashScreenView()
+            if !didShowSplash {
+                SplashScreenView {
+                    didShowSplash = true
+                }
+            } else {
+                if auth.isLoggedIn {
+                    MainTabBar()
+                        .environmentObject(auth)
+                } else {
+                    LoginView(auth: auth)
+                }
+            }
         }
     }
 }
