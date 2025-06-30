@@ -2,8 +2,6 @@
 
 MeshMate is a SwiftUI-based iOS app designed to simulate the management of devices in a mesh Wi-Fi network. It demonstrates modern engineering practices such as gRPC and RESTful integration, reactive UI, offline persistence, and modular architecture — all in a mobile-native experience.
 
----
-
 ## Features
 
 - **Device Management UI** — List and manage connected devices (block/unblock, see details).
