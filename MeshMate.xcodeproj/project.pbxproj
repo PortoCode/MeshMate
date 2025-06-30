@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6DA000EE2E12112A001D569B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6DA000ED2E12112A001D569B /* README.md */; };
 		6DAFC7192DE5553100793A00 /* CGRPCZlib in Frameworks */ = {isa = PBXBuildFile; productRef = 6DAFC7182DE5553100793A00 /* CGRPCZlib */; };
 		6DAFC71B2DE5553100793A00 /* GRPC in Frameworks */ = {isa = PBXBuildFile; productRef = 6DAFC71A2DE5553100793A00 /* GRPC */; };
 		6DAFC71D2DE5553100793A00 /* GRPCReflectionService in Frameworks */ = {isa = PBXBuildFile; productRef = 6DAFC71C2DE5553100793A00 /* GRPCReflectionService */; };
@@ -14,6 +15,7 @@
 
 /* Begin PBXFileReference section */
 		6D9BC4592DDF61DC00C8C392 /* MeshMate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeshMate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DA000ED2E12112A001D569B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -55,6 +57,7 @@
 		6D9BC4502DDF61DC00C8C392 = {
 			isa = PBXGroup;
 			children = (
+				6DA000ED2E12112A001D569B /* README.md */,
 				6D9BC45B2DDF61DC00C8C392 /* MeshMate */,
 				6D9BC45A2DDF61DC00C8C392 /* Products */,
 			);
@@ -138,6 +141,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DA000EE2E12112A001D569B /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
