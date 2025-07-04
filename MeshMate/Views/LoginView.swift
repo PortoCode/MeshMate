@@ -12,6 +12,11 @@ struct LoginView: View {
     
     var body: some View {
         VStack(spacing: 20) {
+            Image("SplashIcon")
+                .resizable()
+                .frame(width: 220, height: 220)
+                .scaledToFit()
+            
             Text("MeshMate")
                 .font(.largeTitle)
                 .bold()
