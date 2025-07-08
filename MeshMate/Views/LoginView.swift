@@ -61,6 +61,11 @@ struct LoginView: View {
                                 }
                             }
                         }
+                        .onTapGesture {
+                            withAnimation {
+                                auth.loginFailed = false
+                            }
+                        }
                 }
             }
         }
