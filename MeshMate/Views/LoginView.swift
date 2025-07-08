@@ -11,35 +11,59 @@ struct LoginView: View {
     @ObservedObject var auth: AuthManager
     
     var body: some View {
-        VStack(spacing: 20) {
-            Image("SplashIcon")
-                .resizable()
-                .frame(width: 220, height: 220)
-                .scaledToFit()
-            
-            Text("MeshMate")
-                .font(.largeTitle)
-                .bold()
+        ZStack {
+            VStack(spacing: 20) {
+                Image("SplashIcon")
+                    .resizable()
+                    .frame(width: 220, height: 220)
+                    .scaledToFit()
+                
+                Text("MeshMate")
+                    .font(.largeTitle)
+                    .bold()
+                    .foregroundStyle(.white)
+                
+                TextField("Username", text: $auth.username)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .autocapitalization(.none)
+                
+                SecureField("Password", text: $auth.password)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                Button("Login") {
+                    withAnimation {
+                        auth.login()
+                    }
+                }
+                .buttonStyle(.borderedProminent)
                 .foregroundStyle(.white)
-            
-            TextField("Username", text: $auth.username)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .autocapitalization(.none)
-            
-            SecureField("Password", text: $auth.password)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-            
-            Button("Login") {
-                auth.login()
+                .disabled(auth.username.isEmpty || auth.password.isEmpty)
             }
-            .buttonStyle(.borderedProminent)
-            .foregroundStyle(.white)
-            .disabled(auth.username.isEmpty || auth.password.isEmpty)
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color("LaunchBackground"))
+            .ignoresSafeArea()
+            
+            if auth.loginFailed {
+                VStack {
+                    Spacer()
+                    Text("Login failed. Please check your credentials.")
+                        .padding()
+                        .background(Color.red.opacity(0.9))
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .padding(.bottom, 50)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                withAnimation {
+                                    auth.loginFailed = false
+                                }
+                            }
+                        }
+                }
+            }
         }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color("LaunchBackground"))
-        .ignoresSafeArea()
     }
 }
 
