@@ -11,10 +11,18 @@ final class AuthManager: ObservableObject {
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     @Published var username: String = ""
     @Published var password: String = ""
+    @Published var loginFailed: Bool = false
     
     func login() {
         if !username.isEmpty && !password.isEmpty {
-            isLoggedIn = true
+            if username == "admin" && password == "1234" {
+                isLoggedIn = true
+                loginFailed = false
+            } else {
+                loginFailed = true
+            }
+        } else {
+            loginFailed = true
         }
     }
     
