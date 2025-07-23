@@ -15,6 +15,12 @@ final class AuthManager: ObservableObject {
     
     private let defaultPassword = "1234"
     
+    init(previewUsername: String? = nil) {
+        if let previewUsername {
+            self.username = previewUsername
+        }
+    }
+    
     func login() {
         if !username.isEmpty && !password.isEmpty {
             if password == defaultPassword {
