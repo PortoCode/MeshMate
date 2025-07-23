@@ -15,7 +15,15 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section(header: Label("Account", systemImage: "person.circle")) {
-                    Text("Profile settings go here…")
+                    HStack {
+                        Image(systemName: "person.fill")
+                            .foregroundColor(.blue)
+                        Text(auth.username)
+                            .font(.body)
+                            .foregroundColor(.primary)
+                        Spacer()
+                    }
+                    .padding(.vertical, 5)
                 }
                 Section(
                     header: Label("Notifications", systemImage: "bell.badge"),
