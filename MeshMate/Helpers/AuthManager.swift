@@ -9,7 +9,7 @@ import SwiftUI
 
 final class AuthManager: ObservableObject {
     @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
-    @Published var username: String = ""
+    @AppStorage("username") var username: String = ""
     @Published var password: String = ""
     @Published var loginFailed: Bool = false
     
