@@ -66,4 +66,5 @@ struct SettingsView: View {
 
 #Preview {
     SettingsView()
+        .environmentObject(AuthManager(previewUsername: "john.doe"))
 }
