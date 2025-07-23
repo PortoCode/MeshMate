@@ -13,9 +13,11 @@ final class AuthManager: ObservableObject {
     @Published var password: String = ""
     @Published var loginFailed: Bool = false
     
+    private let defaultPassword = "1234"
+    
     func login() {
         if !username.isEmpty && !password.isEmpty {
-            if username == "admin" && password == "1234" {
+            if password == defaultPassword {
                 isLoggedIn = true
                 loginFailed = false
             } else {
