@@ -106,3 +106,9 @@ struct MainView: View {
         }
     }
 }
+
+#Preview {
+    let authManager = AuthManager(previewUsername: "john.doe")
+    return MainView(viewModel: MainViewModel(model: NetworkDataModel()))
+        .environmentObject(authManager)
+}
