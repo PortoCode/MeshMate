@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     @ObservedObject var viewModel: MainViewModel
+    @State private var selectedDevice: Device? = nil
     
     var body: some View {
         NavigationStack {
@@ -47,11 +48,14 @@ struct MainView: View {
                     List {
                         Section(header: Label("Connected Devices", systemImage: "person.3.sequence")) {
                             ForEach(viewModel.connectedDevices) { device in
-                                NavigationLink {
-                                    DeviceDetailView(device: device) { updated in
+                                NavigationLink(
+                                    destination: DeviceDetailView(device: device) { updated in
                                         viewModel.updateDevice(updated)
-                                    }
-                                } label: {
+                                        selectedDevice = nil
+                                    },
+                                    tag: device,
+                                    selection: $selectedDevice
+                                ) {
                                     DeviceRowView(name: device.name, ipAddress: device.ipAddress, isBlocked: device.isBlocked)
                                 }
                                 .contextMenu {
