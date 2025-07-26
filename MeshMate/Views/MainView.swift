@@ -13,14 +13,18 @@ struct MainView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 16) {
-                
-                Picker("Network Mode", selection: $viewModel.mode) {
-                    ForEach(NetworkMode.allCases) { mode in
-                        Text(mode.rawValue).tag(mode)
+                VStack {
+                    Text("Network Mode")
+                        .font(.headline)
+                        .padding(.horizontal)
+                    Picker("Network Mode", selection: $viewModel.mode) {
+                        ForEach(NetworkMode.allCases) { mode in
+                            Text(mode.rawValue).tag(mode)
+                        }
                     }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding(.horizontal)
                 }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding(.horizontal)
                 
                 if let status = viewModel.networkStatus {
                     VStack(alignment: .leading, spacing: 4) {
