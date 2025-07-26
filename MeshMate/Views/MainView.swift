@@ -10,9 +10,10 @@ import SwiftUI
 struct MainView: View {
     @ObservedObject var viewModel: MainViewModel
     @State private var selectedDevice: Device? = nil
+    @State private var navigationPath = NavigationPath()
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             VStack(spacing: 16) {
                 VStack {
                     Text("Network Mode")
@@ -48,24 +49,20 @@ struct MainView: View {
                     List {
                         Section(header: Label("Connected Devices", systemImage: "person.3.sequence")) {
                             ForEach(viewModel.connectedDevices) { device in
-                                NavigationLink(
-                                    destination: DeviceDetailView(device: device) { updated in
-                                        viewModel.updateDevice(updated)
-                                        selectedDevice = nil
-                                    },
-                                    tag: device,
-                                    selection: $selectedDevice
-                                ) {
-                                    DeviceRowView(name: device.name, ipAddress: device.ipAddress, isBlocked: device.isBlocked)
-                                }
-                                .contextMenu {
-                                    Button(device.isBlocked ? "Unblock" : "Block") {
-                                        viewModel.toggleBlock(for: device)
+                                DeviceRowView(name: device.name, ipAddress: device.ipAddress, isBlocked: device.isBlocked)
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {
+                                        selectedDevice = device
+                                        navigationPath.append(device)
                                     }
-                                    Button("Remove", role: .destructive) {
-                                        viewModel.removeDevice(device)
+                                    .contextMenu {
+                                        Button(device.isBlocked ? "Unblock" : "Block") {
+                                            viewModel.toggleBlock(for: device)
+                                        }
+                                        Button("Remove", role: .destructive) {
+                                            viewModel.removeDevice(device)
+                                        }
                                     }
-                                }
                             }
                         }
                     }
@@ -104,6 +101,17 @@ struct MainView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: SettingsView()) {
                         Image(systemName: "gearshape")
+                    }
+                }
+            }
+            .navigationDestination(for: Device.self) { device in
+                DeviceDetailView(device: device) { updated in
+                    viewModel.updateDevice(updated)
+                    if selectedDevice == device {
+                        selectedDevice = nil
+                        if !navigationPath.isEmpty {
+                            navigationPath.removeLast()
+                        }
                     }
                 }
             }
