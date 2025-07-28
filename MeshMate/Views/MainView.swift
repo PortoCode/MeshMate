@@ -49,20 +49,22 @@ struct MainView: View {
                     List {
                         Section(header: Label("Connected Devices", systemImage: "person.3.sequence")) {
                             ForEach(viewModel.connectedDevices) { device in
-                                DeviceRowView(name: device.name, ipAddress: device.ipAddress, isBlocked: device.isBlocked)
-                                    .contentShape(Rectangle())
-                                    .onTapGesture {
-                                        selectedDevice = device
-                                        navigationPath.append(device)
+                                Button {
+                                    selectedDevice = device
+                                    navigationPath.append(device)
+                                } label: {
+                                    DeviceRowView(name: device.name, ipAddress: device.ipAddress, isBlocked: device.isBlocked)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                                .buttonStyle(.plain)
+                                .contextMenu {
+                                    Button(device.isBlocked ? "Unblock" : "Block") {
+                                        viewModel.toggleBlock(for: device)
                                     }
-                                    .contextMenu {
-                                        Button(device.isBlocked ? "Unblock" : "Block") {
-                                            viewModel.toggleBlock(for: device)
-                                        }
-                                        Button("Remove", role: .destructive) {
-                                            viewModel.removeDevice(device)
-                                        }
+                                    Button("Remove", role: .destructive) {
+                                        viewModel.removeDevice(device)
                                     }
+                                }
                             }
                         }
                     }
