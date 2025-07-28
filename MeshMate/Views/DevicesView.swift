@@ -25,3 +25,7 @@ struct DevicesView: View {
         }
     }
 }
+
+#Preview {
+    DevicesView(viewModel: DevicesViewModel(model: NetworkDataModel()))
+}
