@@ -32,9 +32,16 @@ struct DeviceRowView: View {
 }
 
 #Preview {
-    DeviceRowView(
-        name: "MacBook",
-        ipAddress: "192.168.0.42",
-        isBlocked: false
-    )
+    List {
+        DeviceRowView(
+            name: "MacBook",
+            ipAddress: "192.168.0.42",
+            isBlocked: false
+        )
+        DeviceRowView(
+            name: "Câmera IP",
+            ipAddress: "192.168.0.150",
+            isBlocked: true
+        )
+    }
 }
