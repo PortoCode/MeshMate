@@ -40,8 +40,10 @@ struct DeviceDetailView: View {
 }
 
 #Preview {
-    DeviceDetailView(
-        device: Device(id: UUID(), name: "MacBook", ipAddress: "192.168.0.42", isBlocked: false),
-        onSave: { _ in }
-    )
+    NavigationStack {
+        DeviceDetailView(
+            device: Device(id: UUID(), name: "MacBook", ipAddress: "192.168.0.42", isBlocked: false),
+            onSave: { _ in }
+        )
+    }
 }
