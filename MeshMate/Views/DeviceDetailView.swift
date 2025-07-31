@@ -38,3 +38,10 @@ struct DeviceDetailView: View {
         .navigationTitle("Device Details")
     }
 }
+
+#Preview {
+    DeviceDetailView(
+        device: Device(id: UUID(), name: "MacBook", ipAddress: "192.168.0.42", isBlocked: false),
+        onSave: { _ in }
+    )
+}
