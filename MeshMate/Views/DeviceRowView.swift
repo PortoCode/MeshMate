@@ -30,3 +30,11 @@ struct DeviceRowView: View {
         }
     }
 }
+
+#Preview {
+    DeviceRowView(
+        name: "MacBook",
+        ipAddress: "192.168.0.42",
+        isBlocked: false
+    )
+}
