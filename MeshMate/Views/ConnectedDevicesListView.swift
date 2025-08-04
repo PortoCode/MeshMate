@@ -58,8 +58,8 @@ struct ConnectedDevicesListView: View {
 #Preview {
     ConnectedDevicesListView(
         devices: [
-            Device(id: UUID(), name: "iPhone de João", ipAddress: "192.168.0.2", isBlocked: false),
-            Device(id: UUID(), name: "Notebook Maria", ipAddress: "192.168.0.3", isBlocked: true)
+            Device(id: UUID(), name: "iPhone 15 Pro", ipAddress: "192.168.0.2", isBlocked: false),
+            Device(id: UUID(), name: "MacBook Pro", ipAddress: "192.168.0.3", isBlocked: true)
         ],
         mode: .grpc,
         onSelect: { device in
