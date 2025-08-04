@@ -22,41 +22,23 @@ struct MainView: View {
                 }
                 
                 if !viewModel.connectedDevices.isEmpty {
-                    List {
-                        Section(header: Label("Connected Devices", systemImage: "person.3.sequence")) {
-                            ForEach(viewModel.connectedDevices) { device in
-                                Button {
-                                    selectedDevice = device
-                                    navigationPath.append(device)
-                                } label: {
-                                    DeviceRowView(name: device.name, ipAddress: device.ipAddress, isBlocked: device.isBlocked)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                                .buttonStyle(.plain)
-                                .contextMenu {
-                                    Button(device.isBlocked ? "Unblock" : "Block") {
-                                        viewModel.toggleBlock(for: device)
-                                    }
-                                    Button("Remove", role: .destructive) {
-                                        viewModel.removeDevice(device)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .listStyle(.insetGrouped)
-                    .frame(maxHeight: 300)
-                    .padding(.top, 1)
-                    
-                    if viewModel.mode == .grpc {
-                        Button {
+                    ConnectedDevicesListView(
+                        devices: viewModel.connectedDevices,
+                        mode: viewModel.mode,
+                        onSelect: { device in
+                            selectedDevice = device
+                            navigationPath.append(device)
+                        },
+                        onToggleBlock: { device in
+                            viewModel.toggleBlock(for: device)
+                        },
+                        onRemove: { device in
+                            viewModel.removeDevice(device)
+                        },
+                        onRefresh: {
                             viewModel.refreshDevices()
-                        } label: {
-                            Label("Update Devices", systemImage: "arrow.triangle.2.circlepath")
                         }
-                        .buttonStyle(.bordered)
-                        .padding(.bottom, 8)
-                    }
+                    )
                 }
                 
                 if viewModel.isLoading {
