@@ -18,20 +18,7 @@ struct MainView: View {
                 NetworkModePickerView(mode: $viewModel.mode)
                 
                 if let status = viewModel.networkStatus {
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack {
-                            Image(systemName: "dot.radiowaves.left.and.right")
-                            Text("My Network")
-                                .font(.largeTitle).bold()
-                        }
-                        Text("Network Status: \(status.isOnline ? "Online" : "Offline")")
-                            .font(.subheadline)
-                            .foregroundStyle(status.isOnline ? .green : .red)
-                        Text("Latency: \(status.latency)ms • ↓ \(Int(status.downloadSpeedMbps))Mbps • ↑ \(Int(status.uploadSpeedMbps))Mbps")
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                    }
-                    .padding(.horizontal)
+                    NetworkStatusView(status: status)
                 }
                 
                 if !viewModel.connectedDevices.isEmpty {
