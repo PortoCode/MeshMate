@@ -43,5 +43,15 @@ struct DeviceRowView: View {
             ipAddress: "192.168.0.150",
             isBlocked: true
         )
+        DeviceRowView(
+            name: "Alexa Echo Dot",
+            ipAddress: "192.168.0.152",
+            isBlocked: false
+        )
+        DeviceRowView(
+            name: "Router",
+            ipAddress: "192.168.0.200",
+            isBlocked: true
+        )
     }
 }
