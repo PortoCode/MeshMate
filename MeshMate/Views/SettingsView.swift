@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct SettingsView: View {
     @EnvironmentObject var auth: AuthManager
@@ -37,6 +38,14 @@ struct SettingsView: View {
                     Text("MeshMate v1.0")
                 }
                 Section {
+                    Button {
+                        HapticsManager.impact(style: .light)
+                        requestAppReview()
+                    } label: {
+                        Label("Rate the App", systemImage: "star.bubble")
+                    }
+                }
+                Section {
                     Button(role: .destructive) {
                         HapticsManager.impact(style: .light)
                         auth.logout()
@@ -60,6 +69,12 @@ struct SettingsView: View {
                 .listRowInsets(EdgeInsets())
             }
             .navigationTitle("Settings")
+        }
+    }
+    
+    func requestAppReview() {
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            SKStoreReviewController.requestReview(in: scene)
         }
     }
 }
