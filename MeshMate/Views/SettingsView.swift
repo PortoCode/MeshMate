@@ -72,7 +72,7 @@ struct SettingsView: View {
         }
     }
     
-    func requestAppReview() {
+    private func requestAppReview() {
         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             AppStore.requestReview(in: scene)
         }
