@@ -22,6 +22,7 @@ struct DeviceDetailView: View {
             
             Section {
                 Button(device.isBlocked ? "Unblock" : "Block") {
+                    HapticsManager.impact(style: .light)
                     device.isBlocked.toggle()
                 }
                 .foregroundColor(device.isBlocked ? .green : .red)
@@ -29,6 +30,7 @@ struct DeviceDetailView: View {
             
             Section {
                 Button("Save") {
+                    HapticsManager.impact(style: .light)
                     onSave(device)
                     dismiss()
                 }
