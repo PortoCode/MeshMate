@@ -49,6 +49,7 @@ struct MainView: View {
                 Spacer()
                 
                 Button(action: {
+                    HapticsManager.impact(style: .light)
                     viewModel.loadData()
                 }) {
                     Label("Load Data", systemImage: "tray.and.arrow.down")
