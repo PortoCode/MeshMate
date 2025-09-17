@@ -22,6 +22,9 @@ struct NetworkModePickerView: View {
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding(.horizontal)
+            .onChange(of: mode) {
+                HapticsManager.impact(style: .light)
+            }
         }
     }
 }
